@@ -1,0 +1,22 @@
+.cell {
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  font-size: 22px;
+  border: 1px solid #555;
+  outline: none;
+}
+
+.cell:focus {
+  background-color: #eef3ff;
+}
+
+.cell.initial {
+  background-color: #e5e5e5;
+  font-weight: bold;
+}
+
+.cell.error {
+  background-color: #ffd6d6;
+  color: red;
+}
