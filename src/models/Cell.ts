@@ -1,22 +1,33 @@
 export class Cell {
+  private value: number;
+  private isInitial: boolean;
+  private isError: boolean;
+
   constructor(value: number = 0, isInitial: boolean = false) {
+    this.value = value;
+    this.isInitial = isInitial;
+    this.isError = false;
   }
 
   public getValue(): number {
-    return -1;
+    return this.value;
   }
 
   public setValue(value: number): void {
+    if (!this.isInitial) {
+      this.value = value;
+    }
   }
 
   public getIsInitial(): boolean {
-    return true;
+    return this.isInitial;
   }
 
   public getIsError(): boolean {
-    return false;
+    return this.isError;
   }
 
   public setError(error: boolean): void {
+    this.isError = error;
   }
 }
