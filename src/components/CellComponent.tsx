@@ -31,19 +31,5 @@ export function CellComponent({
     }
   }
 
-  function renderCell() {
-    return (
-      <input
-        className={`cell ${cell.getIsInitial() ? 'initial' : ''} ${
-          cell.getIsError() ? 'error' : ''
-        }`}
-        value={cell.getValue() === 0 ? '' : cell.getValue()}
-        maxLength={1}
-        disabled={cell.getIsInitial()}
-        onChange={(event) => handleUserInput(event.target.value)}
-      />
-    );
-  }
-
-  return renderCell();
+  
 }
