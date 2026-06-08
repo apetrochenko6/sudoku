@@ -1,12 +1,11 @@
-import { useState } from 'react'
-import './App.css'
+import './App.css';
 
 function App() {
   return (
     <div className="app-container">
       <h1>Sudoku Game</h1>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
