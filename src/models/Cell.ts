@@ -30,4 +30,8 @@ export class Cell {
   public setError(error: boolean): void {
     this.isError = error;
   }
+
+  public cloneAsInitial(): Cell {
+    return new Cell(this.value, true);
+  }
 }

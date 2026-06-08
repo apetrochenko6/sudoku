@@ -8,12 +8,7 @@ type CellComponentProps = {
   onCellChange: (row: number, col: number, value: number) => void;
 };
 
-export function CellComponent({
-  cell,
-  row,
-  col,
-  onCellChange,
-}: CellComponentProps) {
+export function CellComponent({ cell, row, col, onCellChange }: CellComponentProps) {
   function handleUserInput(value: string): void {
     if (cell.getIsInitial()) {
       return;
@@ -31,5 +26,22 @@ export function CellComponent({
     }
   }
 
-  
+  const className = [
+    'cell',
+    cell.getIsInitial() ? 'initial' : '',
+    cell.getIsError() ? 'error' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  return (
+    <input
+      className={className}
+      inputMode="numeric"
+      maxLength={1}
+      readOnly={cell.getIsInitial()}
+      value={cell.getValue() === 0 ? '' : cell.getValue()}
+      onChange={(event) => handleUserInput(event.target.value)}
+    />
+  );
 }
