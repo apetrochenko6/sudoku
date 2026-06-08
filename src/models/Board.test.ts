@@ -29,14 +29,12 @@ describe('Board - Validation', () => {
     it('powinien pozwolić na wstawienie cyfry, jeśli nie ma jej w kolumnie', () => {
       const grid = createEmptyGrid();
       const board = new Board(grid);
-      
       expect(board.checkColumn(0, 7)).toBe(true);
     });
     it('powinien zablokować wstawienie cyfry, jeśli już istnieje w kolumnie', () => {
       const grid = createEmptyGrid();
       grid[4][0].setValue(7);
       const board = new Board(grid);
-    
       expect(board.checkColumn(0, 7)).toBe(false);
     });
   });
@@ -55,4 +53,28 @@ describe('Board - Validation', () => {
       expect(board.checkBox3x3(2, 2, 9)).toBe(false);
     });
   });
+   describe('isValidMove', () => {
+    it('powinien zwrócić true dla w pełni poprawnego ruchu', () => {
+      const grid = createEmptyGrid();
+      const board = new Board(grid);
+      expect(board.isValidMove(0, 0, 5)).toBe(true);
+    });
+
+    it('powinien zwrócić false, jeśli występuje konflikt w wierszu', () => {
+      const grid = createEmptyGrid();
+      grid[0][8].setValue(5);
+      const board = new Board(grid);
+      
+      expect(board.isValidMove(0, 0, 5)).toBe(false);
+    });
+
+    it('powinien zwrócić false, jeśli występuje konflikt w bloku 3x3', () => {
+      const grid = createEmptyGrid();
+      grid[1][1].setValue(5);
+      const board = new Board(grid);
+      
+      expect(board.isValidMove(0, 0, 5)).toBe(false);
+    });
+  });
 });
+ 

@@ -38,4 +38,7 @@ export class Board {
     }
     return true;
   }
+  public isValidMove(row: number, col: number, value: number): boolean {
+    return false;
+  }
 }
