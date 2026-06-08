@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import './TimerComponent.css';
 
 export function TimerComponent() {
   const [seconds, setSeconds] = useState(0);
-  const [isActive, setIsActive] = useState(true);
+ const [isActive] = useState(true);
 
   useEffect(() => {
     if (!isActive)
@@ -15,18 +16,6 @@ export function TimerComponent() {
     return () => clearInterval(interval);
   }, [isActive]);
 
-  const startTimer = () => {
-    setIsActive(true);
-  };
-
-  const pauseTimer = () => {
-    setIsActive(false);
-  };
-
-  const resetTimer = () => {
-    setSeconds(0);
-    setIsActive(true);
-  };
 
   const formatTime = () => {
     const minutes = Math.floor(seconds / 60);
@@ -35,12 +24,14 @@ export function TimerComponent() {
     return `${minutes}:${restSeconds.toString().padStart(2, '0')}`;
   };
 
-  return (
-    <div>
-      <p>Czas gry: {formatTime()}</p>
-      <button onClick={startTimer}>Start</button>
-      <button onClick={pauseTimer}>Pauza</button>
-      <button onClick={resetTimer}>Reset</button>
+ return (
+  <div className="timer-card">
+    <div className="timer-icon">🕒</div>
+
+    <div className="timer-content">
+      <span className="timer-label">Czas</span>
+      <span className="timer-value">{formatTime()}</span>
     </div>
-  );
+  </div>
+);
 }
