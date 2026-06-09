@@ -3,28 +3,19 @@ import './BoardComponent.css';
 import { CellComponent } from './CellComponent';
 import { Cell } from '../models/Cell';
 import type { CellMatrix } from '../models/Cell';
-const createMockGrid = (): CellMatrix => {
-  const grid: CellMatrix = [];
-  for (let row = 0; row < 9; row++) {
-    const currentRow: Cell[] = [];
-    for (let col = 0; col < 9; col++) {
-      const isFilled = Math.random() > 0.7;
-      if (isFilled) {
-        const randomValue = Math.floor(Math.random() * 9) + 1;
-        currentRow.push(new Cell(randomValue, true));
-      } else {
 
-        currentRow.push(new Cell(0, false));
-      }
-    }
-    grid.push(currentRow);
-  }
-  return grid;
-};
+import { Board } from '../models/Board';
+import { Difficulty } from '../models/Difficulty';
+
 
 export const BoardComponent: React.FC = () => {
-  const [grid, setGrid] = useState<CellMatrix>(createMockGrid());
-  
+
+  const [boardObj] = useState(() => {
+    const newBoard = new Board();
+    newBoard.generateBoard(Difficulty.EASY);
+    return newBoard;
+  });
+  const [grid, setGrid] = useState<CellMatrix>(boardObj.getGrid());
   const handleCellChange = (row: number, col: number, value: number) => {
     console.log(`Gracz chce wstawić cyfrę ${value} w komórkę [${row}, ${col}]`);
   };
