@@ -35,3 +35,4 @@ export class Cell {
     return new Cell(this.value, true);
   }
 }
+export type CellMatrix = Cell[][];
