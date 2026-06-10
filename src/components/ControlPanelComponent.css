@@ -1,0 +1,51 @@
+.control-panel {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.difficulty-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.difficulty-label {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.difficulty-select {
+  border: none;
+  background-color: transparent;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+}
+
+.control-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.control-button {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.control-button.primary {
+  background-color: #2563eb;
+  color: white;
+}
+
+.control-button.secondary {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
