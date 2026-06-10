@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import timerIcon from '../assets/timer-icon.svg';
 import './TimerComponent.css';
 
 export function TimerComponent() {
@@ -26,7 +27,9 @@ export function TimerComponent() {
 
  return (
   <div className="timer-card">
-    <div className="timer-icon">🕒</div>
+   <div className="timer-icon">
+  <img src={timerIcon} alt="" className="timer-icon-image" />
+</div>
 
     <div className="timer-content">
       <span className="timer-label">Czas</span>
