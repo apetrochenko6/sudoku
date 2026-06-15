@@ -3,7 +3,7 @@
   grid-template-columns: repeat(9, 50px);
   grid-template-rows: repeat(9, 50px);
   background-color: #ccc;
-  border: 3px solid #333;
+  border: 3px solid rgb(84, 162, 182);
   width: max-content;
   margin: 20px auto;
 }
@@ -16,8 +16,8 @@
 
 }
 .border-right-thick {
-  border-right: 2px solid #333;
+  border-right: 3px solid rgb(84, 162, 182);
 }
 .border-bottom-thick {
-  border-bottom: 2px solid #333;
+  border-bottom: 3px solid rgb(84, 162, 182);
 } 
