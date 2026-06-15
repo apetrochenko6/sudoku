@@ -1,0 +1,46 @@
+.numpad {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: fit-content;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background-color: var(--social-bg);
+  box-shadow: var(--shadow);
+}
+
+.numpad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 56px);
+  gap: 8px;
+}
+
+.numpad-button {
+  height: 56px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background-color: var(--bg);
+  color: var(--text-h);
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.1s ease,
+    background-color 0.1s ease,
+    border-color 0.1s ease;
+}
+
+.numpad-button:hover {
+  background-color: var(--accent-bg);
+  border-color: var(--accent-border);
+}
+
+.numpad-button:active {
+  transform: scale(0.95);
+}
+
+.numpad-clear {
+  width: 100%;
+  color: var(--accent);
+}

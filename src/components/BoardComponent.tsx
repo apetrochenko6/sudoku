@@ -11,7 +11,9 @@ export const BoardComponent: React.FC = () => {
     newBoard.generateBoard(Difficulty.HARD);
     return newBoard;
   });
-const [grid, setGrid] = useState<CellMatrix>(boardObj.getGrid());  
+
+  const [grid] = useState<CellMatrix>(boardObj.getGrid());
+
   const handleCellChange = (row: number, col: number, value: number) => {
     console.log(`Gracz wprowadził ${value} w [${row}, ${col}]`);
   };
