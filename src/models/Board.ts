@@ -111,4 +111,14 @@ export class Board {
       this.checkBox3x3(row, col, value)
     );
   }
+  public isMoveGloballyValid(row: number, col: number, value: number): boolean {
+    if (!this.isValidMove(row, col, value)) {
+      return false;
+    }
+    const boardCopy = new Board(this.cloneGrid());
+    boardCopy.getCell(row, col).setValue(value);
+    const solver = new Solver();
+    return solver.solve(boardCopy);
+  }
+  
 }

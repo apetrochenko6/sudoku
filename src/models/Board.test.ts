@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Board } from './Board';
 import { Cell } from './Cell';
 import { Difficulty } from './Difficulty';
+import { Solver } from './Solver';
 
 const createEmptyGrid = () =>
   Array(9)
@@ -99,23 +100,43 @@ describe('Board - Validation', () => {
     });
   });
 });
-
+describe('isMoveGloballyValid', () => {
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
+    it('powinien zwrócić false, jeśli ruch jest lokalnie niepoprawny', () => {
+      const grid = createEmptyGrid();
+      grid[0][0].setValue(5);
+      const board = new Board(grid);
+      expect(board.isMoveGloballyValid(0, 1, 5)).toBe(false);
+    });
+    it('powinien zwrócić true, jeśli ruch jest lokalnie poprawny i prowadzi do rozwiązania', () => {
+      const grid = createEmptyGrid();
+      const board = new Board(grid);
+      const solveSpy = vi.spyOn(Solver.prototype, 'solve').mockReturnValue(true);
+      expect(board.isMoveGloballyValid(0, 0, 7)).toBe(true);
+      expect(solveSpy).toHaveBeenCalledOnce();
+    });
+    it('powinien zwrócić false, jeśli ruch jest lokalnie poprawny, ale plansza staje się nierozwiązywalna', () => {
+      const grid = createEmptyGrid();
+      const board = new Board(grid);
+      const solveSpy = vi.spyOn(Solver.prototype, 'solve').mockReturnValue(false);
+      expect(board.isMoveGloballyValid(0, 0, 9)).toBe(false);
+      expect(solveSpy).toHaveBeenCalledOnce();
+    });
+  });
 describe('Board - Generation', () => {
   it('powinien wygenerować planszę EASY z 30 pustymi polami', () => {
     const board = Board.generateBoard(Difficulty.EASY);
-
     expect(countEmptyCells(board)).toBe(30);
   });
-
   it('powinien wygenerować planszę MEDIUM z 45 pustymi polami', () => {
     const board = Board.generateBoard(Difficulty.MEDIUM);
-
     expect(countEmptyCells(board)).toBe(45);
   });
-
   it('powinien wygenerować planszę HARD z 55 pustymi polami', () => {
     const board = Board.generateBoard(Difficulty.HARD);
-
     expect(countEmptyCells(board)).toBe(55);
   });
-});
+}
+);
