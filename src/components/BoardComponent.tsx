@@ -13,9 +13,15 @@ export const BoardComponent: React.FC = () => {
   });
 
   const [grid] = useState<CellMatrix>(boardObj.getGrid());
-
+  const [, forceRender] = useState(0);
   const handleCellChange = (row: number, col: number, value: number) => {
-    console.log(`Gracz wprowadził ${value} w [${row}, ${col}]`);
+    if (boardObj.isMoveGloballyValid(row, col, value)) {
+      console.log(`Genialny ruch! ${value} w [${row}, ${col}]`);
+      boardObj.getCell(row, col).setValue(value);
+      forceRender(prev => prev + 1);
+    } else{
+      console.log(`Błąd: cyfra ${value} tu nie pasuje globalnie lub łamie zasady.`);
+    }
   };
 
   return (
@@ -42,4 +48,4 @@ export const BoardComponent: React.FC = () => {
       ))}
     </div>
   );
-};
+}; 

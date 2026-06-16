@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Board } from './Board';
 import { Cell } from './Cell';
 import { Difficulty } from './Difficulty';
+import { Solver } from './Solver';
 
 const createEmptyGrid = () =>
   Array(9)
@@ -99,7 +100,46 @@ describe('Board - Validation', () => {
     });
   });
 });
+describe('isMoveGloballyValid', () => {
+    afterEach(() => {
+      vi.restoreAllMocks();
+    });
 
+    it('powinien zwrócić false, jeśli ruch jest lokalnie niepoprawny', () => {
+      const grid = createEmptyGrid();
+      grid[0][0].setValue(5);
+      const board = new Board(grid);
+
+      // Próbujemy wstawić 5 w tym samym wierszu obok, co łamie podstawowe zasady
+      expect(board.isMoveGloballyValid(0, 1, 5)).toBe(false);
+    });
+
+    it('powinien zwrócić true, jeśli ruch jest lokalnie poprawny i prowadzi do rozwiązania', () => {
+      const grid = createEmptyGrid();
+      const board = new Board(grid);
+
+      // Sztucznie mówimy Solverowi: "zakładamy, że znalazłeś rozwiązanie"
+      const solveSpy = vi.spyOn(Solver.prototype, 'solve').mockReturnValue(true);
+
+      expect(board.isMoveGloballyValid(0, 0, 7)).toBe(true);
+      
+      // Upewniamy się, że Solver faktycznie został użyty do sprawdzenia
+      expect(solveSpy).toHaveBeenCalledOnce();
+    });
+
+    it('powinien zwrócić false, jeśli ruch jest lokalnie poprawny, ale plansza staje się nierozwiązywalna', () => {
+      const grid = createEmptyGrid();
+      const board = new Board(grid);
+
+      // Sztucznie wymuszamy sytuację ślepego zaułka (Solver nie potrafi rozwiązać)
+      const solveSpy = vi.spyOn(Solver.prototype, 'solve').mockReturnValue(false);
+
+      expect(board.isMoveGloballyValid(0, 0, 9)).toBe(false);
+      
+      // Sprawdzamy, czy Solver został zapytany o zdanie
+      expect(solveSpy).toHaveBeenCalledOnce();
+    });
+  });
 describe('Board - Generation', () => {
   it('powinien wygenerować planszę EASY z 30 pustymi polami', () => {
     const board = Board.generateBoard(Difficulty.EASY);
@@ -118,4 +158,5 @@ describe('Board - Generation', () => {
 
     expect(countEmptyCells(board)).toBe(55);
   });
-});
+}
+);
