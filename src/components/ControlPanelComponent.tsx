@@ -1,6 +1,7 @@
 import { Difficulty } from '../models/Difficulty';
 
 type ControlPanelComponentProps = {
+  difficulty: Difficulty;
   onNewGame: () => void;
   onReset: () => void;
   onSolve: () => void;
@@ -8,6 +9,7 @@ type ControlPanelComponentProps = {
 };
 
 export function ControlPanelComponent({
+  difficulty,
   onNewGame,
   onReset,
   onSolve,
@@ -29,7 +31,7 @@ export function ControlPanelComponent({
     <div>
       <div>
         <label>Poziom trudności: </label>
-        <select onChange={event => onDifficultyChange(event.target.value as Difficulty)}>
+        <select value={difficulty} onChange={event => onDifficultyChange(event.target.value as Difficulty)}>
           <option value={Difficulty.EASY}>EASY</option>
           <option value={Difficulty.MEDIUM}>MEDIUM</option>
           <option value={Difficulty.HARD}>HARD</option>
