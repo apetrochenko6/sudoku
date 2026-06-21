@@ -1,10 +1,16 @@
 import { useEffect, useState } from 'react';
 import timerIcon from '../assets/timer-icon.svg';
 import './TimerComponent.css';
-
-export function TimerComponent() {
+type TimerComponentProps = {
+  resetKey: number;
+};
+export function TimerComponent({ resetKey }: TimerComponentProps) {
   const [seconds, setSeconds] = useState(0);
  const [isActive] = useState(true);
+
+  useEffect(() => {
+    setSeconds(0);
+  }, [resetKey]);
 
   useEffect(() => {
     if (!isActive)

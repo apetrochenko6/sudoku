@@ -51,7 +51,7 @@ function App() {
       <div className="app-title">Sudoku Game</div>
 
       <div className="game-status-bar">
-        <TimerComponent />
+        <TimerComponent key={resetKey} resetKey={resetKey} />
         <ErrorCounterComponent errorsCount={errorsCount} />
       </div>
 
