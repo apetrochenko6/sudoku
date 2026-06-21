@@ -35,7 +35,7 @@ export function BoardComponent({
       return;
     }
 
-    const isCorrectMove = boardObj.isValidMove(row, col, value);
+    const isCorrectMove = boardObj.isMoveGloballyValid(row, col, value);
 
     cell.setValue(value);
     cell.setError(!isCorrectMove);
