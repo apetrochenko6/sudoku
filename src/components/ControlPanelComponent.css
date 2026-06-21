@@ -38,6 +38,18 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+  transition:
+    transform 0.1s ease,
+    background-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.control-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 14%);
+}
+.control-button:active {
+  transform: scale(0.96);
 }
 
 .control-button.primary {
@@ -45,7 +57,15 @@
   color: white;
 }
 
+.control-button.primary:hover {
+  background-color: #1d4ed8;
+}
+
 .control-button.secondary {
   background-color: #f3f4f6;
   color: #6b7280;
+}
+.control-button.secondary:hover {
+  background-color: #e5e7eb;
+  color: #374151;
 }
