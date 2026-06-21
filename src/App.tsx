@@ -48,7 +48,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1>Sudoku Game</h1>
+      <div className="app-title">Sudoku Game</div>
 
       <div className="game-status-bar">
         <TimerComponent />
@@ -62,9 +62,7 @@ function App() {
         onDifficultyChange={handleDifficultyChange}
       />
 
-      <p>Wybrany poziom trudności: {difficulty}</p>
-      <p>Wybrana cyfra: {selectedNumber === null ? 'brak' : selectedNumber}</p>
-
+      <div className='game-container'>
       <BoardComponent
         ref={boardRef}
         key={`${difficulty}-${resetKey}`}
@@ -74,6 +72,7 @@ function App() {
       />
 
       <NumpadComponent onNumberSelect={handleNumberSelect} />
+      </div>
     </div>
   );
 }

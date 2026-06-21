@@ -5,7 +5,7 @@
   width: fit-content;
   padding: 12px 16px;
   border-radius: 14px;
-  background-color: #1f2937;
+  background-color: #FEE2E2;
   color: white;
   box-shadow: 0 8px 20px rgb(0 0 0 / 18%);
 }
@@ -24,7 +24,7 @@
 .error-counter-label {
   font-size: 13px;
   font-weight: 600;
-  color: #d1d5db;
+  color: #EF4444;
 }
 
 .error-counter-value {
