@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react'; // ДОДАНО: useRef
 import './App.css';
-import { BoardComponent } from './components/BoardComponent';
+import { BoardComponent, type BoardRef } from './components/BoardComponent';
 import { ControlPanelComponent } from './components/ControlPanelComponent';
 import { ErrorCounterComponent } from './components/ErrorCounterComponent';
 import { NumpadComponent } from './components/NumpadComponent';
@@ -12,6 +12,8 @@ function App() {
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
   const [errorsCount, setErrorsCount] = useState(0);
   const [resetKey, setResetKey] = useState(0);
+
+  const boardRef = useRef<BoardRef>(null);
 
   function resetGameState(): void {
     setErrorsCount(0);
@@ -28,7 +30,7 @@ function App() {
   }
 
   function handleSolve(): void {
-    console.log('Rozwiązanie gry');
+    boardRef.current?.solve();
   }
 
   function handleDifficultyChange(newDifficulty: Difficulty): void {
@@ -64,9 +66,11 @@ function App() {
       <p>Wybrana cyfra: {selectedNumber === null ? 'brak' : selectedNumber}</p>
 
       <BoardComponent
+        ref={boardRef}
         key={`${difficulty}-${resetKey}`}
         difficulty={difficulty}
         onIncorrectMove={handleIncorrectMove}
+        selectedNumber={selectedNumber}
       />
 
       <NumpadComponent onNumberSelect={handleNumberSelect} />

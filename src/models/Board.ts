@@ -118,5 +118,15 @@ export class Board {
     return this.isValidMove(row, col, value) &&
     this.isCorrectMove(row, col, value)
   }
-  
+  public solve(): void {
+    for (let row = 0; row < 9; row += 1) {
+      for (let col = 0; col < 9; col += 1) {
+        if (!this.grid[row][col].getIsInitial()) {
+          const correctValue = this.solvedBoard[row][col].getValue();
+          this.grid[row][col].setValue(correctValue);
+          this.grid[row][col].setError(false);
+        }
+      }
+    }
+  }
 }
