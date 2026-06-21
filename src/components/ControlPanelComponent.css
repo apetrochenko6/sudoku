@@ -18,7 +18,7 @@
 .difficulty-select {
   border: none;
   background-color: transparent;
-  color: #2563eb;
+  color:#86c4c3;;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -53,12 +53,12 @@
 }
 
 .control-button.primary {
-  background-color: #2563eb;
+  background-color: #86c4c3;;
   color: white;
 }
 
 .control-button.primary:hover {
-  background-color: #1d4ed8;
+  background-color: #86c4c3;;
 }
 
 .control-button.secondary {
