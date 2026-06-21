@@ -13,9 +13,10 @@ const cellsToRemoveByDifficulty: Record<DifficultyLevel, number> = {
 
 export class Board {
   private grid: CellMatrix;
-
-  constructor(initialGrid: CellMatrix = Board.createEmptyGrid()) {
+  private solvedBoard: CellMatrix;
+  constructor(initialGrid: CellMatrix = Board.createEmptyGrid(), solvedBoard: CellMatrix = Board.createEmptyGrid()) {
     this.grid = initialGrid;
+    this.solvedBoard = solvedBoard;
   }
 
   public static createEmptyGrid(): CellMatrix {
@@ -40,7 +41,7 @@ export class Board {
       }
     }
 
-    return new Board(generatedGrid);
+    return new Board(generatedGrid, solvedBoard.cloneGrid());
   }
 
   public generateBoard(diff: DifficultyLevel): void {
@@ -99,7 +100,9 @@ export class Board {
 
     return true;
   }
-
+  public isCorrectMove(row: number, col: number,value: number): boolean {
+    return this.solvedBoard[row][col].getValue() === value;
+  }
   public isValidMove(row: number, col: number, value: number): boolean {
     if (value < 1 || value > 9) {
       return false;
@@ -110,5 +113,20 @@ export class Board {
       this.checkColumn(col, value, row) &&
       this.checkBox3x3(row, col, value)
     );
+  }
+  public isMoveGloballyValid(row: number, col: number, value: number): boolean {
+    return this.isValidMove(row, col, value) &&
+    this.isCorrectMove(row, col, value)
+  }
+  public solve(): void {
+    for (let row = 0; row < 9; row += 1) {
+      for (let col = 0; col < 9; col += 1) {
+        if (!this.grid[row][col].getIsInitial()) {
+          const correctValue = this.solvedBoard[row][col].getValue();
+          this.grid[row][col].setValue(correctValue);
+          this.grid[row][col].setError(false);
+        }
+      }
+    }
   }
 }

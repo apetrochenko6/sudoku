@@ -119,3 +119,40 @@ describe('Board - Generation', () => {
     expect(countEmptyCells(board)).toBe(55);
   });
 });
+describe('Board - Global validation', () => {
+  it('powinien zwrócić true, jeśli ruch jest zgodny z rozwiązaniem planszy', () => {
+    const grid = createEmptyGrid();
+    const solvedGrid = createEmptyGrid();
+
+    solvedGrid[0][0].setValue(7);
+
+    const board = new Board(grid, solvedGrid);
+
+    expect(board.isMoveGloballyValid(0, 0, 7)).toBe(true);
+  });
+
+  it('powinien zwrócić false, jeśli ruch nie jest zgodny z rozwiązaniem planszy', () => {
+    const grid = createEmptyGrid();
+    const solvedGrid = createEmptyGrid();
+
+    solvedGrid[0][0].setValue(7);
+
+    const board = new Board(grid, solvedGrid);
+
+    expect(board.isMoveGloballyValid(0, 0, 5)).toBe(false);
+  });
+
+  it('powinien zwrócić false, jeśli ruch łamie zasady Sudoku nawet gdy zgadza się z rozwiązaniem', () => {
+    const grid = createEmptyGrid();
+    const solvedGrid = createEmptyGrid();
+
+    solvedGrid[0][0].setValue(7);
+
+    // konflikt w wierszu
+    grid[0][4].setValue(7);
+
+    const board = new Board(grid, solvedGrid);
+
+    expect(board.isMoveGloballyValid(0, 0, 7)).toBe(false);
+  });
+});

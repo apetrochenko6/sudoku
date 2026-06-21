@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import './BoardComponent.css';
+import { useState, forwardRef, useImperativeHandle }
+ from 'react';import './BoardComponent.css';
 import { CellComponent } from './CellComponent';
 import { Board } from '../models/Board';
 import type { CellMatrix } from '../models/Cell';
@@ -8,42 +8,46 @@ import { Difficulty } from '../models/Difficulty';
 type BoardComponentProps = {
   difficulty?: Difficulty;
   onIncorrectMove?: () => void;
+  selectedNumber?: number | null;
 };
-
-export function BoardComponent({
-  difficulty = Difficulty.HARD,
-  onIncorrectMove = () => undefined,
-}: BoardComponentProps) {
-  const [boardObj] = useState<Board>(() => Board.generateBoard(difficulty));
-  const [grid, setGrid] = useState<CellMatrix>(boardObj.getGrid());
+export type BoardRef = {
+  solve: () => void;
+};
+export const BoardComponent = forwardRef<BoardRef, BoardComponentProps>(
+  ({ difficulty = Difficulty.HARD, onIncorrectMove = () => undefined, selectedNumber = null }, ref) => {
+    const [boardObj] = useState<Board>(() => Board.generateBoard(difficulty));
+    const [grid, setGrid] = useState<CellMatrix>(boardObj.getGrid());
 
   function refreshGrid(): void {
     setGrid(boardObj.getGrid().map((row) => [...row]));
   }
-
+  useImperativeHandle(ref, () => ({
+      solve() {
+        boardObj.solve();
+        refreshGrid();
+      },
+    }));
   function handleCellChange(row: number, col: number, value: number): void {
-    const cell = boardObj.getCell(row, col);
-
-    if (cell.getIsInitial()) {
-      return;
-    }
-
-    if (value === 0) {
-      cell.setValue(0);
-      cell.setError(false);
-      refreshGrid();
-      return;
-    }
-
-    const isCorrectMove = boardObj.isValidMove(row, col, value);
-
-    cell.setValue(value);
-    cell.setError(!isCorrectMove);
-
-    if (!isCorrectMove) {
-      onIncorrectMove();
-    }
-
+    const valueToSet = value ?? selectedNumber;
+      if (valueToSet === null) {
+        return;
+      }
+      const cell = boardObj.getCell(row, col);
+      if (cell.getIsInitial()) {
+        return;
+      }
+      if (valueToSet === 0) {
+        cell.setValue(0);
+        cell.setError(false);
+        refreshGrid();
+        return;
+      }
+      const isCorrectMove = boardObj.isMoveGloballyValid(row, col, valueToSet);
+      cell.setValue(valueToSet);
+      cell.setError(!isCorrectMove);
+      if (!isCorrectMove) {
+        onIncorrectMove();
+      }
     refreshGrid();
   }
 
@@ -71,5 +75,6 @@ export function BoardComponent({
         })
       ))}
     </div>
-  );
-}
+);
+  }
+);
