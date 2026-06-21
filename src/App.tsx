@@ -62,7 +62,7 @@ function App() {
 
       <p>Wybrany poziom trudności: {difficulty}</p>
       <p>Wybrana cyfra: {selectedNumber === null ? 'brak' : selectedNumber}</p>
-
+      <div className='game-container'>
       <BoardComponent
         key={`${difficulty}-${resetKey}`}
         difficulty={difficulty}
@@ -70,6 +70,7 @@ function App() {
       />
 
       <NumpadComponent onNumberSelect={handleNumberSelect} />
+      </div>
     </div>
   );
 }
