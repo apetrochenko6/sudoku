@@ -1,4 +1,5 @@
-import { useState, forwardRef, useImperativeHandle } from 'react';import './BoardComponent.css';
+import { useState, forwardRef, useImperativeHandle }
+ from 'react';import './BoardComponent.css';
 import { CellComponent } from './CellComponent';
 import { Board } from '../models/Board';
 import type { CellMatrix } from '../models/Cell';
