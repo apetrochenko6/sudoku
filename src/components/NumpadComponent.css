@@ -11,13 +11,14 @@
 }
 
 .numpad-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 56px);
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
 .numpad-button {
   height: 56px;
+  width: 56px;
   border: 1px solid var(--border);
   border-radius: 12px;
   background-color: var(--bg);
@@ -41,6 +42,5 @@
 }
 
 .numpad-clear {
-  width: 100%;
-  color: var(--accent);
+   display: none;
 }

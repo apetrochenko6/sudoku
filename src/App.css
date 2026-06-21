@@ -15,3 +15,22 @@
   gap: 16px;
   flex-wrap: wrap;
 }
+.game-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  margin-top: 20px;
+}
+.numpad {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+}
+
+.numpad button {
+  width: 60px;
+  height: 45px;
+}
