@@ -1,4 +1,4 @@
-import { useState, forwardRef, useImperativeHandle }
+import { useState, forwardRef, useImperativeHandle, useEffect  }
  from 'react';import './BoardComponent.css';
 import { CellComponent } from './CellComponent';
 import { Board } from '../models/Board';
@@ -9,12 +9,22 @@ type BoardComponentProps = {
   difficulty?: Difficulty;
   onIncorrectMove?: () => void;
   selectedNumber?: number | null;
+  selectedCell?: {
+    row: number;
+    col: number;
+  } | null;
+
+   onCellSelect?: (
+    cell: { row: number; col: number } | null
+  ) => void;
+  onClearNumber?: () => void;
 };
 export type BoardRef = {
   solve: () => void;
 };
 export const BoardComponent = forwardRef<BoardRef, BoardComponentProps>(
-  ({ difficulty = Difficulty.HARD, onIncorrectMove = () => undefined, selectedNumber = null }, ref) => {
+  ({ difficulty = Difficulty.HARD, onIncorrectMove = () => undefined, selectedNumber = null,selectedCell = null,
+    onCellSelect,onClearNumber }, ref) => {
     const [boardObj] = useState<Board>(() => Board.generateBoard(difficulty));
     const [grid, setGrid] = useState<CellMatrix>(boardObj.getGrid());
 
@@ -50,7 +60,22 @@ export const BoardComponent = forwardRef<BoardRef, BoardComponentProps>(
       }
     refreshGrid();
   }
+  useEffect(() => {
+    if (
+      selectedNumber === null ||
+      selectedCell === null
+    ) {
+      return;
+    }
 
+    handleCellChange(
+      selectedCell.row,
+      selectedCell.col,
+      selectedNumber
+    );
+    onCellSelect?.(null);
+    onClearNumber?.();
+  }, [selectedNumber, selectedCell]);
   return (
     <div className="sudoku-board" data-testid="sudoku-board">
       {grid.map((rowArr, rowIndex) => (
@@ -69,6 +94,11 @@ export const BoardComponent = forwardRef<BoardRef, BoardComponentProps>(
                 row={rowIndex}
                 col={colIndex}
                 onCellChange={handleCellChange}
+                onSelect={() => onCellSelect?.({
+                  row: rowIndex,
+                  col: colIndex,
+                  })
+                }
               />
             </div>
           );
