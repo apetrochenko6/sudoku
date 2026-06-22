@@ -12,12 +12,16 @@ function App() {
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
   const [errorsCount, setErrorsCount] = useState(0);
   const [resetKey, setResetKey] = useState(0);
-
+  const [selectedCell, setSelectedCell] = useState<{
+  row: number;
+  col: number;
+  } | null>(null);
   const boardRef = useRef<BoardRef>(null);
 
   function resetGameState(): void {
     setErrorsCount(0);
     setSelectedNumber(null);
+    setSelectedCell(null);
     setResetKey((previousResetKey) => previousResetKey + 1);
   }
 
@@ -51,7 +55,7 @@ function App() {
       <div className="app-title">Sudoku Game</div>
 
       <div className="game-status-bar">
-        <TimerComponent />
+        <TimerComponent key={resetKey} resetKey={resetKey} />
         <ErrorCounterComponent errorsCount={errorsCount} />
       </div>
 
@@ -69,6 +73,9 @@ function App() {
         difficulty={difficulty}
         onIncorrectMove={handleIncorrectMove}
         selectedNumber={selectedNumber}
+        selectedCell={selectedCell}
+        onCellSelect={setSelectedCell}
+        onClearNumber={() => setSelectedNumber(null)}
       />
 
       <NumpadComponent onNumberSelect={handleNumberSelect} />

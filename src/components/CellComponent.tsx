@@ -6,30 +6,31 @@ type CellComponentProps = {
   row: number;
   col: number;
   onCellChange: (row: number, col: number, value: number) => void;
+  onSelect?: () => void;
 };
 
-export function CellComponent({ cell, row, col, onCellChange }: CellComponentProps) {
+export function CellComponent(props: CellComponentProps) {
   function handleUserInput(value: string): void {
-    if (cell.getIsInitial()) {
+    if (props.cell.getIsInitial()) {
       return;
     }
 
     if (value === '') {
-      onCellChange(row, col, 0);
+      props.onCellChange(props.row, props.col, 0);
       return;
     }
 
     const numberValue = Number(value);
 
     if (numberValue >= 1 && numberValue <= 9) {
-      onCellChange(row, col, numberValue);
+      props.onCellChange(props.row, props.col, numberValue);
     }
   }
 
   const className = [
     'cell',
-    cell.getIsInitial() ? 'initial' : '',
-    cell.getIsError() ? 'error' : '',
+    props.cell.getIsInitial() ? 'initial' : '',
+    props.cell.getIsError() ? 'error' : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -39,9 +40,10 @@ export function CellComponent({ cell, row, col, onCellChange }: CellComponentPro
       className={className}
       inputMode="numeric"
       maxLength={1}
-      readOnly={cell.getIsInitial()}
-      value={cell.getValue() === 0 ? '' : cell.getValue()}
+      readOnly={props.cell.getIsInitial()}
+      value={props.cell.getValue() === 0 ? '' : props.cell.getValue()}
       onChange={(event) => handleUserInput(event.target.value)}
+      onClick={props.onSelect}
     />
   );
 }
