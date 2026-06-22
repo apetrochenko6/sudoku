@@ -6,7 +6,8 @@ import { ErrorCounterComponent } from './components/ErrorCounterComponent';
 import { NumpadComponent } from './components/NumpadComponent';
 import { TimerComponent } from './components/TimerComponent';
 import { Difficulty } from './models/Difficulty';
-
+type GameStatus = 'PLAYING' | 'WON' | 'LOST';
+const MAX_ERRORS = 3;
 function App() {
   const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.EASY);
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
@@ -17,11 +18,14 @@ function App() {
   col: number;
   } | null>(null);
   const boardRef = useRef<BoardRef>(null);
+  
+  const [gameStatus, setGameStatus] = useState<GameStatus>('PLAYING');
 
   function resetGameState(): void {
     setErrorsCount(0);
     setSelectedNumber(null);
     setSelectedCell(null);
+    setGameStatus('PLAYING');
     setResetKey((previousResetKey) => previousResetKey + 1);
   }
 
@@ -43,20 +47,29 @@ function App() {
   }
 
   function handleNumberSelect(value: number): void {
+    if (gameStatus !== 'PLAYING') return;
     setSelectedNumber(value);
   }
 
   function handleIncorrectMove(): void {
-    setErrorsCount((previousErrorsCount) => previousErrorsCount + 1);
+    setErrorsCount((prev) => {
+      const newErrors = prev + 1;
+      if (newErrors >= MAX_ERRORS) {
+        setGameStatus('LOST');
+      }
+      return newErrors;
+    });
   }
-
+  function handleGameWon(): void {
+    setGameStatus('WON');
+  }
   return (
     <div className="app-container">
       <div className="app-title">Sudoku Game</div>
-
       <div className="game-status-bar">
-        <TimerComponent key={resetKey} resetKey={resetKey} />
+        <TimerComponent key={resetKey} resetKey={resetKey}/>
         <ErrorCounterComponent errorsCount={errorsCount} />
+        <div style={{ marginLeft: '10px', color: 'gray' }}>Limit błędów: {MAX_ERRORS}</div>
       </div>
 
       <ControlPanelComponent
@@ -66,19 +79,26 @@ function App() {
         onDifficultyChange={handleDifficultyChange}
       />
 
-      <div className='game-container'>
-      <BoardComponent
-        ref={boardRef}
-        key={`${difficulty}-${resetKey}`}
-        difficulty={difficulty}
-        onIncorrectMove={handleIncorrectMove}
-        selectedNumber={selectedNumber}
-        selectedCell={selectedCell}
-        onCellSelect={setSelectedCell}
-        onClearNumber={() => setSelectedNumber(null)}
-      />
+      <div className='game-container' style={{ position: 'relative' }}>
+                {gameStatus !== 'PLAYING' && (
+          <div className="game-over-overlay">
+            <h2>{gameStatus === 'WON' ? '🏆 Wygrałeś!' : '💔 Przegrałeś!'}</h2>
+            <button onClick={handleNewGame}>Zagraj ponownie</button>
+          </div>
+        )}
 
-      <NumpadComponent onNumberSelect={handleNumberSelect} />
+        <BoardComponent
+          ref={boardRef}
+          key={`${difficulty}-${resetKey}`}
+          difficulty={difficulty}
+          onIncorrectMove={handleIncorrectMove}
+          onGameWon={handleGameWon}
+          selectedNumber={selectedNumber}
+          selectedCell={selectedCell}
+          onCellSelect={setSelectedCell}
+          onClearNumber={() => setSelectedNumber(null)}
+        />
+        <NumpadComponent onNumberSelect={handleNumberSelect} />
       </div>
     </div>
   );

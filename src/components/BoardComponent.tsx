@@ -18,13 +18,14 @@ type BoardComponentProps = {
     cell: { row: number; col: number } | null
   ) => void;
   onClearNumber?: () => void;
+  onGameWon?: () => void;
 };
 export type BoardRef = {
   solve: () => void;
 };
 export const BoardComponent = forwardRef<BoardRef, BoardComponentProps>(
   ({ difficulty = Difficulty.HARD, onIncorrectMove = () => undefined, selectedNumber = null,selectedCell = null,
-    onCellSelect,onClearNumber }, ref) => {
+    onCellSelect,onClearNumber,onGameWon = () => undefined}, ref) => {
     const [boardObj] = useState<Board>(() => Board.generateBoard(difficulty));
     const [grid, setGrid] = useState<CellMatrix>(boardObj.getGrid());
 
@@ -57,6 +58,10 @@ export const BoardComponent = forwardRef<BoardRef, BoardComponentProps>(
       cell.setError(!isCorrectMove);
       if (!isCorrectMove) {
         onIncorrectMove();
+      } else {
+        if (checkIsGameWon(boardObj.getGrid())) {
+          onGameWon();
+        }
       }
     refreshGrid();
   }
@@ -76,6 +81,16 @@ export const BoardComponent = forwardRef<BoardRef, BoardComponentProps>(
     onCellSelect?.(null);
     onClearNumber?.();
   }, [selectedNumber, selectedCell]);
+    function checkIsGameWon(currentGrid: CellMatrix): boolean {
+      for (const row of currentGrid) {
+        for (const cell of row) {
+          if (cell.getValue() === 0 || cell.getIsError()) {
+            return false; 
+          }
+        }
+      }
+      return true;
+    }
   return (
     <div className="sudoku-board" data-testid="sudoku-board">
       {grid.map((rowArr, rowIndex) => (
