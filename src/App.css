@@ -46,3 +46,42 @@
   width: 60px;
   height: 45px;
 }
+
+
+
+
+
+.game-container {
+  position: relative; /* Ważne dla nakładki */
+}
+
+.game-over-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.85); /* Półprzezroczyste tło */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10; /* Musi być nad planszą */
+  border-radius: 8px;
+}
+
+.game-over-overlay h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.game-over-overlay button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
